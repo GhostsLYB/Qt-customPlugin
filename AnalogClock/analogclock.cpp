@@ -15,11 +15,6 @@ AnalogClock::AnalogClock(QWidget *parent) :
 void AnalogClock::paintEvent(QPaintEvent* e)
 {
     Q_UNUSED(e);
-    //钟表三个指针的颜色
-    QColor hourColor = QColor("#7F007F");
-    QColor minuteColor = QColor(0,127,127,196);
-    QColor secondColor = QColor(127,127,0,180);
-
     //钟表的三个指针
     static QPoint hourHand[3] = {QPoint(-5,10),
                                  QPoint(5,10),
@@ -48,14 +43,14 @@ void AnalogClock::paintEvent(QPaintEvent* e)
     //画小时刻度
     painter.save();
     QPen pen;
-    pen.setWidth(3);
+    pen.setWidth(hourWidth);
     pen.setColor(hourColor);
     painter.setPen(pen);
     for(int i = 1; i <= 12; i++)
     {
         painter.rotate(30);
-        painter.drawLine(0,-92,0,-86);
-        painter.drawText(QRect(-4,-84,12,12),QString("%1").arg(i));
+        painter.drawLine(0,-90,0,-84);
+        painter.drawText(QRect(-4,-82,12,12),QString("%1").arg(i));
 
     }
     painter.restore();
@@ -69,14 +64,14 @@ void AnalogClock::paintEvent(QPaintEvent* e)
     painter.drawConvexPolygon(minuteHand,3);
     painter.restore();
     //画分钟刻度
-    pen.setWidth(2);
+    pen.setWidth(minuteWidth);
     pen.setColor(minuteColor);
     painter.setPen(pen);
     painter.save();
     for(int i = 0; i < 60; i++)
     {
         if(i%5 != 0)
-            painter.drawLine(0,91,0,88);
+            painter.drawLine(0,89,0,86);
         painter.rotate(6);
     }
     painter.restore();
@@ -92,14 +87,30 @@ void AnalogClock::paintEvent(QPaintEvent* e)
     //画表盘中心转轴
     painter.setPen(Qt::NoPen);
     painter.setBrush(QBrush(Qt::black));
-    painter.drawEllipse(QPoint(0,0),5,5);
+    painter.drawEllipse(QPoint(0,0),7,7);
     //画表盘
     pen.setColor(Qt::black);
-    pen.setWidth(5);
+    pen.setWidth(borderWidth);
     painter.setPen(pen);
     painter.setBrush(QBrush());
-    painter.drawEllipse(QPoint(0,0),97,97);
+    painter.drawEllipse(QPoint(0,0),95,95);
 }
+
+QColor AnalogClock::getHourColor()const{return hourColor;}
+QColor AnalogClock::getMinuteColor()const{return minuteColor;}
+QColor AnalogClock::getSecondColor()const{return secondColor;}
+QColor AnalogClock::getTextColor()const{return textColor;}
+int AnalogClock::getBorderWidth()const{return borderWidth;}
+int AnalogClock::getHourWidth()const{return hourWidth;}
+int AnalogClock::getMinuteWidth()const{return minuteWidth;}
+
+void AnalogClock::setHourColor(QColor c){hourColor = c;}
+void AnalogClock::setMinuteColor(QColor c){minuteColor = c;};
+void AnalogClock::setSecondColor(QColor c){secondColor = c;}
+void AnalogClock::setTextColor(QColor c){textColor = c;}
+void AnalogClock::setBorderWidth(int i){borderWidth = i;}
+void AnalogClock::setHourWidth(int i){hourWidth = i;}
+void AnalogClock::setMinuteWidth(int i){minuteWidth = i;}
 
 AnalogClock::~AnalogClock()
 {
